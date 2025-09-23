@@ -35,7 +35,7 @@ class PostType {
 			'show_ui'     => true,
 			'has_archive' => false,
 			'hierarchical' => false,
-			'menu_icon'   => 'dashicons-cart',
+			'menu_icon'   => 'dashicons-phone',
 			'rewrite'     => [ 'slug' => 'serial' ],
 		];
 

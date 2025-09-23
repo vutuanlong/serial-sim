@@ -22,3 +22,5 @@ define( 'ASS_VER', '1.0.0' );
 load_plugin_textdomain( 'ass', false, plugin_basename( ASS_DIR ) . '/languages' );
 
 ( new Serial\PostType() )->init();
+( new SoTMDT\PostType() )->init();
+( new SoWeb\PostType() )->init();
