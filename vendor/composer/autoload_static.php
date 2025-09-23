@@ -39,7 +39,7 @@ class ComposerStaticInitc56ac033e7191a95d7757fd4c3ddbec8
         ),
         'A' => 
         array (
-            'AML\\' => 4,
+            'ASS\\' => 4,
         ),
     );
 
@@ -58,8 +58,8 @@ class ComposerStaticInitc56ac033e7191a95d7757fd4c3ddbec8
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -85,7 +85,7 @@ class ComposerStaticInitc56ac033e7191a95d7757fd4c3ddbec8
         array (
             0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
         ),
-        'AML\\' => 
+        'ASS\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),

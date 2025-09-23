@@ -8,7 +8,7 @@
  * Author URI:  vsim.com.vn
  */
 
-namespace AML;
+namespace ASS;
 
 // Prevent loading this file directly.
 defined( 'ABSPATH' ) || die;
@@ -20,3 +20,5 @@ define( 'ASS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ASS_VER', '1.0.0' );
 
 load_plugin_textdomain( 'ass', false, plugin_basename( ASS_DIR ) . '/languages' );
+
+( new Serial\PostType() )->init();
