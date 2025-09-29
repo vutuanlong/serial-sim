@@ -20,7 +20,7 @@ class Import {
 			'Nhập Serial',
 			'manage_options',
 			'import-serial',
-			[$this, 'import_serial_excel']
+			[ $this, 'import_serial_excel' ]
 		);
 	}
 
@@ -29,48 +29,84 @@ class Import {
 
 		// Form upload file
 		echo '<form method="post" enctype="multipart/form-data">';
-		wp_nonce_field('import_serial_nonce', 'import_serial_nonce_field');
+		wp_nonce_field( 'import_serial_nonce', 'import_serial_nonce_field' );
 		echo '<input type="file" name="import_file" accept=".xlsx" required />';
-		submit_button('Upload và Nhập Serial');
+
+		?>
+		<p>
+			<label>Chọn ngày nhập:</label><br>
+			<input type="date" name="ngay_nhap" required>
+		</p>
+
+		<p>
+			<label>Chọn nhà mạng:</label><br>
+			<select name="nha_mang" required>
+				<option value="Viettel">Viettel</option>
+				<option value="Vinaphone">Vinaphone</option>
+				<option value="Mobifone">Mobifone</option>
+				<option value="Vietnamobile">Vietnamobile</option>
+				<option value="Itel">Itel</option>
+				<option value="Local">Local</option>
+				<option value="Vnsky">Vnsky</option>
+				<option value="Wintel">Wintel</option>
+			</select>
+		</p>
+
+		<p>
+			<label>Chọn loại sim:</label><br>
+			<select name="loai_sim" required>
+				<option value="Trả trước">Trả trước</option>
+				<option value="Trả sau">Trả sau</option>
+			</select>
+		</p>
+		<?php
+
+		submit_button( 'Upload và Nhập Serial' );
 		echo '</form>';
 
 		// Xử lý file upload
-		if (isset($_FILES['import_file']) && !empty($_FILES['import_file']['tmp_name'])) {
-			if (!isset($_POST['import_serial_nonce_field']) || !wp_verify_nonce($_POST['import_serial_nonce_field'], 'import_serial_nonce')) {
-				wp_die('Nonce verification failed');
+		if ( isset( $_FILES['import_file'] ) && ! empty( $_FILES['import_file']['tmp_name'] ) ) {
+			if ( ! isset( $_POST['import_serial_nonce_field'] ) || ! wp_verify_nonce( $_POST['import_serial_nonce_field'], 'import_serial_nonce' ) ) {
+				wp_die( 'Nonce verification failed' );
 			}
 
 			$file = $_FILES['import_file']['tmp_name'];
-			$spreadsheet = IOFactory::load($file);
+			$spreadsheet = IOFactory::load( $file );
 			$sheet = $spreadsheet->getActiveSheet();
 
 			$highestRow = $sheet->getHighestRow();
 
-			for ($row = 4; $row <= $highestRow; $row++) {
-				$name          = trim($sheet->getCell('A' . $row)->getValue());
-				$email         = trim($sheet->getCell('B' . $row)->getValue());
-				$response_time = trim($sheet->getCell('C' . $row)->getValue());
+			$ngay_nhap = sanitize_text_field( $_POST['ngay_nhap'] );
+			$nha_mang  = sanitize_text_field( $_POST['nha_mang'] );
+			$loai_sim  = sanitize_text_field( $_POST['loai_sim'] );
 
-				if (empty($name) && empty($email)) {
+			for ( $row = 2; $row <= $highestRow; $row++ ) {
+				$date = trim( $sheet->getCell( 'B' . $row )->getValue() );
+				$name = trim( $sheet->getCell( 'C' . $row )->getValue() );
+
+				if ( empty( $name ) && empty( $date ) ) {
 					continue;
 				}
 
-				$post_id = wp_insert_post([
-					'post_title'  => $name . ' - ' . $email . ' - ' . $response_time,
+				$post_id = wp_insert_post( [
+					'post_title'  => $name,
 					'post_type'   => 'serial',
-					'post_status' => 'publish'
-				]);
+					'post_status' => 'publish',
+				] );
 
-				if ($post_id) {
+				if ( $post_id ) {
 
-					$contact_info = [
-						'contact_name' => $name,
-						'contact_email' => $email,
-						'contact_city' => $response_time
-					];
-
-					update_post_meta($post_id, '_ppa_contact_info', $contact_info);
-
+					update_post_meta( $post_id, 'ngay_nhap', $ngay_nhap );
+					update_post_meta( $post_id, 'sdt', trim( $sheet->getCell( 'D' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'sdt_chamdinhdang', trim( $sheet->getCell( 'E' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'dinh_dang_sim', trim( $sheet->getCell( 'F' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'nha_mang', $nha_mang );
+					update_post_meta( $post_id, 'loai_sim', $loai_sim );
+					update_post_meta( $post_id, 'cam_ket', trim( $sheet->getCell( 'I' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'goi_cuoc', trim( $sheet->getCell( 'J' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'kenh_ban', trim( $sheet->getCell( 'K' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'tinh_trang_ban', trim( $sheet->getCell( 'L' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'ghi_chu', trim( $sheet->getCell( 'M' . $row )->getValue() ) );
 				}
 			}
 
