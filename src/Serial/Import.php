@@ -50,6 +50,7 @@ class Import {
 				<option value="Wintel">Wintel</option>
 			</select>
 		</p>
+
 		<?php
 
 		echo '<input type="file" name="import_file" accept=".xlsx" required />';
@@ -81,6 +82,7 @@ class Import {
 
 				// check nếu serial đã tồn tại (title post type serial)
 				$exists = get_page_by_title( $name, OBJECT, 'serial' );
+
 				if ( $exists ) {
 					$errors[] = $name;
 					continue;
@@ -93,8 +95,18 @@ class Import {
 				] );
 
 				if ( $post_id ) {
+
 					update_post_meta( $post_id, 'ngay_nhap', $ngay_nhap );
+					update_post_meta( $post_id, 'sdt', trim( $sheet->getCell( 'D' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'sdt_chamdinhdang', trim( $sheet->getCell( 'E' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'dinh_dang_sim', trim( $sheet->getCell( 'F' . $row )->getValue() ) );
 					update_post_meta( $post_id, 'nha_mang', $nha_mang );
+					update_post_meta( $post_id, 'loai_sim', trim( $sheet->getCell( 'H' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'cam_ket', trim( $sheet->getCell( 'I' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'goi_cuoc', trim( $sheet->getCell( 'J' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'kenh_ban', trim( $sheet->getCell( 'K' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'tinh_trang_ban', trim( $sheet->getCell( 'L' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'ghi_chu', trim( $sheet->getCell( 'M' . $row )->getValue() ) );
 				}
 			}
 
