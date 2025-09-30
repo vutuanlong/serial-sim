@@ -6,7 +6,7 @@ class PostType {
 	public function init() {
 		add_action( 'init', [ $this, 'register_post_type' ] );
 		add_filter( 'rwmb_meta_boxes', [ $this, 'register_meta_boxes' ] );
-
+		add_action( 'admin_menu', [ $this, 'add_menu' ] );
 	}
 
 
@@ -40,6 +40,72 @@ class PostType {
 		];
 
 		register_post_type( 'serial', $args );
+	}
+
+	public function add_menu() {
+		if ( current_user_can( 'manage_options' ) ) {
+			$page = add_submenu_page(
+				'edit.php?post_type=serial',
+				__( 'Xem thông tin', 'ass' ),
+				__( 'Xem thông tin', 'ass' ),
+				'manage_options',
+				'thong-tin',
+				[
+					$this,
+					'render',
+				]
+			);
+			add_action( "admin_print_styles-$page", [ $this, 'enqueue' ] );
+		}
+	}
+
+	public function render() {
+
+		$current_user = wp_get_current_user();
+
+		if (
+			in_array( 'administrator', $current_user->roles )
+		) {
+			include ASS_DIR . 'templates/admin/serial-views.php';
+		} else {
+			wp_die( 'Bạn không có quyền truy cập trang này' );
+		}
+	}
+
+	public function enqueue() {
+		// wp_enqueue_style( 'baocao', trailingslashit( ASS_URL ) . "assets/css/baocao.css", [], filemtime( trailingslashit( ASS_DIR ) . "assets/css/baocao.css" ) );
+	}
+
+	public static function serial_get_data() {
+		$orderby = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'chi_phi_don';
+		$order   = isset( $_GET['order'] ) ? strtoupper( $_GET['order'] ) : 'DESC';
+
+		$args = [
+			'post_type'      => 'serial',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1, // Lấy hết để tính toán
+			'no_found_rows'  => false, // cần false để WP_Query đếm tổng post
+		];
+
+		$query = new \WP_Query( $args );
+
+		$data_nhan_vien = [];
+
+		if ( $query->have_posts() ) {
+			while ( $query->have_posts() ) {
+				$query->the_post();
+				$post_id      = get_the_ID();
+
+				$data_nhan_vien[] = [
+					'serial_sim' => get_the_title( $post_id ),
+					'ngay_nhap'  => get_post_meta( $post_id, 'ngay_nhap', true ),
+
+				];
+			}
+		}
+		wp_reset_postdata();
+
+		return $data_nhan_vien;
 	}
 
 	public function register_meta_boxes( $meta_boxes ) {
