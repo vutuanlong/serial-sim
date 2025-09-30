@@ -48,7 +48,7 @@ class PostType {
 				__( 'Xem thông tin', 'ass' ),
 				__( 'Xem thông tin', 'ass' ),
 				'manage_options',
-				'thong-tin',
+				'thong-tin-so-web',
 				[
 					$this,
 					'render',
