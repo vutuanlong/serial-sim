@@ -89,23 +89,22 @@ class PostType {
 
 		$query = new \WP_Query( $args );
 
-		$data_nhan_vien = [];
+		$data_serial = [];
 
 		if ( $query->have_posts() ) {
 			while ( $query->have_posts() ) {
 				$query->the_post();
 				$post_id      = get_the_ID();
 
-				$data_nhan_vien[] = [
+				$data_serial[] = [
 					'serial_sim' => get_the_title( $post_id ),
 					'ngay_nhap'  => get_post_meta( $post_id, 'ngay_nhap', true ),
-
 				];
 			}
 		}
 		wp_reset_postdata();
 
-		return $data_nhan_vien;
+		return $data_serial;
 	}
 
 	public function register_meta_boxes( $meta_boxes ) {
