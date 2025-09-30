@@ -1,5 +1,5 @@
 <?php
-use ASS\SoTMDT\PostType;
+use ASS\SoWeb\PostType;
 ?>
 
 <div class="wrap">
@@ -11,7 +11,7 @@ use ASS\SoTMDT\PostType;
 	$order      = isset( $_GET['order'] ) ? strtoupper( $_GET['order'] ) : 'DESC';
 
 	// Form lọc ngày
-	echo '<div class="wrap"><h1>Thông tin kho Số TMDT</h1>';
+	echo '<div class="wrap"><h1>Thông tin kho Số bán web</h1>';
 	echo '<form method="GET" class="filter-form">';
 	echo '</form>';
 
@@ -21,12 +21,14 @@ use ASS\SoTMDT\PostType;
 			<th>STT</th>
 			<th>SDT - Định dạng thường</th>
 			<th>SDT - Chấm định dạng</th>
-			<th>Định dạng sim</th>
-			<th>Nhà mạng</th>
+			<th>ID kho</th>
+			<th>Cọc sim</th>
+			<th>Giá bán lẻ</th>
+			<th>Giá đại lý</th>
 			<th>Loại sim</th>
 			<th>Cam kết</th>
-			<th>Gói cước</th>
 			<th>Kênh bán hàng</th>
+			<th>Ngày bán</th>
 			<th>Tình trạng bán hàng</th>
 			<th>Ghi chú</th>
 			</tr></thead>';
@@ -39,12 +41,14 @@ use ASS\SoTMDT\PostType;
 				<td>' . esc_html( $key + 1 ) . '</td>
 				<td>' . esc_html( $nv['sdt'] ) . '</td>
 				<td>' . esc_html( $nv['sdt_chamdinhdang'] ) . '</td>
-				<td>' . esc_html( $nv['dinh_dang_sim'] ) . '</td>
-				<td>' . esc_html( $nv['nha_mang'] ) . '</td>
+				<td>' . esc_html( $nv['id_kho'] ) . '</td>
+				<td>' . esc_html( $nv['coc_sim'] ) . '</td>
+				<td>' . esc_html( $nv['gia_ban_le'] ) . '</td>
+				<td>' . esc_html( $nv['gia_dai_ly'] ) . '</td>
 				<td>' . esc_html( $nv['loai_sim'] ) . '</td>
 				<td>' . esc_html( $nv['cam_ket'] ) . '</td>
-				<td>' . esc_html( $nv['goi_cuoc'] ) . '</td>
 				<td>' . esc_html( $nv['kenh_ban'] ) . '</td>
+				<td>' . esc_html( $nv['ngay_ban'] ) . '</td>
 				<td>' . esc_html( $nv['tinh_trang_ban'] ) . '</td>
 				<td>' . esc_html( $nv['ghi_chu'] ) . '</td>
 				</tr>';

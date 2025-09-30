@@ -27,3 +27,4 @@ load_plugin_textdomain( 'ass', false, plugin_basename( ASS_DIR ) . '/languages' 
 
 ( new Serial\Import() )->init();
 ( new SoTMDT\Import() )->init();
+( new SoWeb\Import() )->init();
