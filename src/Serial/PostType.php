@@ -7,6 +7,7 @@ class PostType {
 		add_action( 'init', [ $this, 'register_post_type' ] );
 		add_filter( 'rwmb_meta_boxes', [ $this, 'register_meta_boxes' ] );
 		add_action( 'admin_menu', [ $this, 'add_menu' ] );
+		add_action( 'wp_ajax_save_serial_inline', [ $this, 'save_serial_inline' ] );
 	}
 
 
@@ -73,7 +74,13 @@ class PostType {
 	}
 
 	public function enqueue() {
-		// wp_enqueue_style( 'baocao', trailingslashit( ASS_URL ) . "assets/css/baocao.css", [], filemtime( trailingslashit( ASS_DIR ) . "assets/css/baocao.css" ) );
+		wp_enqueue_style( 'serial', trailingslashit( ASS_URL ) . "assets/css/serial.css", [], filemtime( trailingslashit( ASS_DIR ) . "assets/css/serial.css" ) );
+		wp_enqueue_script( 'serial-admin', ASS_URL . '/assets/js/serial-admin.js', ['jquery'], '1.0', true );
+		wp_localize_script(
+			'serial-admin',
+			'ajax_object',
+			[ 'ajax_url' => admin_url( 'admin-ajax.php' ) ]
+		);
 	}
 
 	public static function serial_get_data() {
@@ -97,14 +104,62 @@ class PostType {
 				$post_id      = get_the_ID();
 
 				$data_serial[] = [
+					'serial_id' => $post_id,
 					'serial_sim' => get_the_title( $post_id ),
 					'ngay_nhap'  => get_post_meta( $post_id, 'ngay_nhap', true ),
+					'sdt' => get_post_meta( $post_id, 'sdt', true ),
+					'sdt_chamdinhdang'  => get_post_meta( $post_id, 'sdt_chamdinhdang', true ),
+					'dinh_dang_sim'  => get_post_meta( $post_id, 'dinh_dang_sim', true ),
+					'nha_mang'  => get_post_meta( $post_id, 'nha_mang', true ),
+					'loai_sim'  => get_post_meta( $post_id, 'loai_sim', true ),
+					'cam_ket'  => get_post_meta( $post_id, 'cam_ket', true ),
+					'goi_cuoc'  => get_post_meta( $post_id, 'goi_cuoc', true ),
+					'kenh_ban'  => get_post_meta( $post_id, 'kenh_ban', true ),
+					'tinh_trang_ban'  => get_post_meta( $post_id, 'tinh_trang_ban', true ),
+					'ghi_chu'  => get_post_meta( $post_id, 'ghi_chu', true ),
 				];
 			}
 		}
 		wp_reset_postdata();
 
 		return $data_serial;
+	}
+
+	public function save_serial_inline() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( [ 'message' => 'Bạn không có quyền' ] );
+		}
+
+		$post_id = intval($_POST['post_id']);
+
+		// Update meta
+		$fields = [
+			'ngay_nhap',
+			'sdt',
+			'sdt_chamdinhdang',
+			'dinh_dang_sim',
+			'nha_mang',
+			'loai_sim',
+			'cam_ket',
+			'goi_cuoc',
+			'kenh_ban',
+			'tinh_trang_ban',
+			'ghi_chu',
+		];
+		foreach ( $fields as $field ) {
+			if ( isset( $_POST[$field] ) ) {
+				update_post_meta( $post_id, $field, sanitize_text_field( $_POST[$field] ) );
+			}
+		}
+
+		if ( ! empty( $_POST['serial_sim'] ) ) {
+			wp_update_post( [
+				'ID' => $post_id,
+				'post_title' => sanitize_text_field( $_POST['serial_sim'] ),
+			] );
+		}
+
+		wp_send_json_success( [ 'message' => 'Lưu thành công' ] );
 	}
 
 	public function register_meta_boxes( $meta_boxes ) {

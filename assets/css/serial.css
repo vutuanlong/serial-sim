@@ -1,0 +1,4 @@
+.table-serial td[contenteditable="true"] {
+    border: 1px solid #4CAF50;
+    background: #f6fff6;
+}
