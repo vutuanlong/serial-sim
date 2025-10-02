@@ -8,6 +8,8 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
+use ASS\SoTMDT\PostType;
+
 class Import {
 	public function init() {
 		add_action( 'admin_menu', [ $this, 'admin_menu' ] );
@@ -24,6 +26,8 @@ class Import {
 		);
 	}
 
+
+
 	public function import_so_tmdt_excel() {
 		echo '<div class="wrap"><h1>Nhập Số TMDT</h1>';
 
@@ -31,19 +35,15 @@ class Import {
 		echo '<form method="post" enctype="multipart/form-data">';
 		wp_nonce_field( 'import_so_tmdt_nonce', 'import_so_tmdt_nonce_field' );
 
+		$array_nha_mang = PostType::nha_mang();
 		?>
 
 		<p>
 			<label>Chọn nhà mạng:</label><br>
 			<select name="nha_mang" required>
-				<option value="Viettel">Viettel</option>
-				<option value="Vinaphone">Vinaphone</option>
-				<option value="Mobifone">Mobifone</option>
-				<option value="Vietnamobile">Vietnamobile</option>
-				<option value="Itel">Itel</option>
-				<option value="Local">Local</option>
-				<option value="Vnsky">Vnsky</option>
-				<option value="Wintel">Wintel</option>
+				<?php foreach ( $array_nha_mang as $nha_mang ) : ?>
+					<option value="<?= $nha_mang ?>"><?= $nha_mang ?></option>
+				<?php endforeach; ?>
 			</select>
 		</p>
 

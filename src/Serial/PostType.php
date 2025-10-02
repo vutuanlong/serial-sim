@@ -7,7 +7,7 @@ class PostType {
 		add_action( 'init', [ $this, 'register_post_type' ] );
 		add_filter( 'rwmb_meta_boxes', [ $this, 'register_meta_boxes' ] );
 		add_action( 'admin_menu', [ $this, 'add_menu' ] );
-		add_action( 'wp_ajax_save_serial_inline', [ $this, 'save_serial_inline' ] );
+		add_action( 'wp_ajax_save_so_tmdt_inline', [ $this, 'save_so_tmdt_inline' ] );
 	}
 
 
@@ -47,8 +47,8 @@ class PostType {
 		if ( current_user_can( 'manage_options' ) ) {
 			$page = add_submenu_page(
 				'edit.php?post_type=serial',
-				__( 'Xem thông tin', 'ass' ),
-				__( 'Xem thông tin', 'ass' ),
+				__( 'Thông tin serial sim + kho số TMDT', 'ass' ),
+				__( 'Thông tin serial sim + kho số TMDT', 'ass' ),
 				'manage_options',
 				'thong-tin',
 				[
@@ -125,7 +125,7 @@ class PostType {
 		return $data_serial;
 	}
 
-	public function save_serial_inline() {
+	public function save_so_tmdt_inline() {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( [ 'message' => 'Bạn không có quyền' ] );
 		}
@@ -134,7 +134,6 @@ class PostType {
 
 		// Update meta
 		$fields = [
-			'ngay_nhap',
 			'sdt',
 			'sdt_chamdinhdang',
 			'dinh_dang_sim',
@@ -152,10 +151,10 @@ class PostType {
 			}
 		}
 
-		if ( ! empty( $_POST['serial_sim'] ) ) {
+		if ( ! empty( $_POST['sdt'] ) ) {
 			wp_update_post( [
 				'ID' => $post_id,
-				'post_title' => sanitize_text_field( $_POST['serial_sim'] ),
+				'post_title' => sanitize_text_field( $_POST['sdt'] ),
 			] );
 		}
 

@@ -2,3 +2,6 @@
     border: 1px solid #4CAF50;
     background: #f6fff6;
 }
+.table-serial select {
+	width: 100%;
+}

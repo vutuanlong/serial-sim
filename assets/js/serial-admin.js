@@ -1,7 +1,30 @@
 jQuery( function($) {
     $(".btn-edit").on("click", function(){
         var row = $(this).closest("tr");
-        row.find("td.editable").attr("contenteditable", "true");
+
+        row.find("td.editable").each(function(){
+            var td = $(this);
+            var type = td.data("type");
+            var val = td.text().trim();
+
+            if(type === "select"){
+                var options = td.data("options");
+                if(typeof options === "string"){
+                    options = JSON.parse(options);
+                }
+                var select = $("<select>");
+                $.each(options, function(i, opt){
+                    var option = $("<option>").val(opt).text(opt);
+                    if(opt === val) option.attr("selected", "selected");
+                    select.append(option);
+                });
+                td.data("old", val);
+                td.html(select);
+            } else {
+                td.attr("contenteditable", "true").data("old", val);
+            }
+        });
+
         $(this).hide();
         row.find(".btn-save").show();
     });
@@ -11,15 +34,13 @@ jQuery( function($) {
         var post_id = $(this).data("id");
 
         var data = {
-            action: "save_serial_inline",
+            action: "save_so_tmdt_inline",
             post_id: post_id,
-            ngay_nhap: row.find("td[data-field='ngay_nhap']").text(),
-            serial_sim: row.find("td[data-field='serial_sim']").text(),
             sdt: row.find("td[data-field='sdt']").text(),
             sdt_chamdinhdang: row.find("td[data-field='sdt_chamdinhdang']").text(),
             dinh_dang_sim: row.find("td[data-field='dinh_dang_sim']").text(),
-            nha_mang: row.find("td[data-field='nha_mang']").text(),
-            loai_sim: row.find("td[data-field='loai_sim']").text(),
+            nha_mang: row.find("td[data-field='nha_mang']").find('select').val(),
+            loai_sim: row.find("td[data-field='loai_sim']").find('select').val(),
             cam_ket: row.find("td[data-field='cam_ket']").text(),
             goi_cuoc: row.find("td[data-field='goi_cuoc']").text(),
             kenh_ban: row.find("td[data-field='kenh_ban']").text(),

@@ -8,6 +8,18 @@ class PostType {
 		add_action( 'admin_menu', [ $this, 'add_menu' ] );
 	}
 
+	public static function nha_mang() {
+		return [
+			"Viettel",
+			"Vinaphone",
+			"Mobifone",
+			"Vietnamobile",
+			"Itel",
+			"Local",
+			"Vnsky",
+			"Wintel"
+		];
+	}
 
 	public function register_post_type() {
 		$labels  = [
@@ -73,6 +85,14 @@ class PostType {
 
 	public function enqueue() {
 		// wp_enqueue_style( 'baocao', trailingslashit( ASS_URL ) . "assets/css/baocao.css", [], filemtime( trailingslashit( ASS_DIR ) . "assets/css/baocao.css" ) );
+
+		wp_enqueue_style( 'serial', trailingslashit( ASS_URL ) . "assets/css/serial.css", [], filemtime( trailingslashit( ASS_DIR ) . "assets/css/serial.css" ) );
+		wp_enqueue_script( 'serial-admin', ASS_URL . '/assets/js/serial-admin.js', ['jquery'], '1.0', true );
+		wp_localize_script(
+			'serial-admin',
+			'ajax_object',
+			[ 'ajax_url' => admin_url( 'admin-ajax.php' ) ]
+		);
 	}
 
 	public static function get_data() {
@@ -96,6 +116,7 @@ class PostType {
 				$post_id      = get_the_ID();
 
 				$data_so_tmdt[] = [
+					'so_tmdt_id' => $post_id,
 					'sdt' => get_the_title( $post_id ),
 					'sdt_chamdinhdang'  => get_post_meta( $post_id, 'sdt_chamdinhdang', true ),
 					'dinh_dang_sim'  => get_post_meta( $post_id, 'dinh_dang_sim', true ),
