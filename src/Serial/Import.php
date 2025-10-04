@@ -8,7 +8,7 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-use ASS\SoTMDT\PostType;
+use ASS\Helper;
 
 class Import {
 	public function init() {
@@ -33,7 +33,7 @@ class Import {
 		echo '<form method="post" enctype="multipart/form-data">';
 		wp_nonce_field( 'import_serial_nonce', 'import_serial_nonce_field' );
 
-		$array_nha_mang = PostType::nha_mang();
+		$array_nha_mang = Helper::nha_mang();
 		?>
 		<p>
 			<label>Chọn ngày nhập:</label><br>

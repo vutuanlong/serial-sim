@@ -4,4 +4,9 @@
 }
 .table-serial select {
 	width: 100%;
+	font-size: 11px;
+}
+.table-serial.widefat td,
+.table-serial.widefat th {
+	font-size: 11px;
 }

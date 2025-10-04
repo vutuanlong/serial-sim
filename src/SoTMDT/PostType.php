@@ -127,6 +127,7 @@ class PostType {
 					'kenh_ban'  => get_post_meta( $post_id, 'kenh_ban', true ),
 					'tinh_trang_ban'  => get_post_meta( $post_id, 'tinh_trang_ban', true ),
 					'ghi_chu'  => get_post_meta( $post_id, 'ghi_chu', true ),
+					'serial_sim'  => get_post_meta( $post_id, 'serial_sim', true ),
 				];
 			}
 		}

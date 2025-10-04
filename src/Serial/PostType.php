@@ -144,6 +144,7 @@ class PostType {
 			'kenh_ban',
 			'tinh_trang_ban',
 			'ghi_chu',
+			'serial_sim',
 		];
 		foreach ( $fields as $field ) {
 			if ( isset( $_POST[$field] ) ) {

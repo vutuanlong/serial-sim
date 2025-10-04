@@ -41,6 +41,7 @@ jQuery( function($) {
             dinh_dang_sim: row.find("td[data-field='dinh_dang_sim']").text(),
             nha_mang: row.find("td[data-field='nha_mang']").find('select').val(),
             loai_sim: row.find("td[data-field='loai_sim']").find('select').val(),
+            serial_sim: row.find("td[data-field='serial_sim']").find('select').val(),
             cam_ket: row.find("td[data-field='cam_ket']").text(),
             goi_cuoc: row.find("td[data-field='goi_cuoc']").text(),
             kenh_ban: row.find("td[data-field='kenh_ban']").text(),
