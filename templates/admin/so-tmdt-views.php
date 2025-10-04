@@ -26,7 +26,7 @@ use ASS\Helper;
 			<th>Tình trạng bán hàng</th>
 			<th>Ghi chú</th>
 			<th>Gán Serial Sim</th>
-			<th>Hành động</th>
+			<th>Thao tác</th>
 			</tr></thead>';
 	echo '<tbody>';
 
