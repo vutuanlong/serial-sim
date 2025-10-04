@@ -33,7 +33,7 @@ use ASS\Helper;
 	$data_nha_mang = Helper::nha_mang();
 	$data_so_tmdt = SoTMDTPostType::get_data();
 	$data_serial = SerialPostType::serial_get_data();
-	$serials = array_column($data_serial, 'serial_sim');
+	$serials = array_column( $data_serial, 'serial_sim' );
 
 	foreach ( $data_so_tmdt as $key => $nv ) {
 		?>

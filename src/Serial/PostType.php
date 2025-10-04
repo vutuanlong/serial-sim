@@ -130,7 +130,7 @@ class PostType {
 			wp_send_json_error( [ 'message' => 'Bạn không có quyền' ] );
 		}
 
-		$post_id = intval($_POST['post_id']);
+		$post_id = intval( $_POST['post_id'] );
 
 		// Update meta
 		$fields = [
@@ -157,6 +157,19 @@ class PostType {
 				'ID' => $post_id,
 				'post_title' => sanitize_text_field( $_POST['sdt'] ),
 			] );
+		}
+
+		if ( ! empty( $_POST['serial_sim'] ) ) {
+
+			$query = new \WP_Query( [
+				'post_type'      => 'serial',
+				'title'          => $_POST['serial_sim'],
+				'posts_per_page' => 1,
+				'fields'         => 'ids'
+			] );
+
+			$serial_sim = $query->posts[0];
+			update_post_meta( $serial_sim, 'sdt', sanitize_text_field( $_POST['sdt'] ) );
 		}
 
 		wp_send_json_success( [ 'message' => 'Lưu thành công' ] );
