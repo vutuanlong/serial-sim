@@ -106,7 +106,7 @@ class Import {
 					update_post_meta( $post_id, 'cam_ket', trim( $sheet->getCell( 'G' . $row )->getValue() ) );
 					update_post_meta( $post_id, 'goi_cuoc', trim( $sheet->getCell( 'H' . $row )->getValue() ) );
 					update_post_meta( $post_id, 'kenh_ban', trim( $sheet->getCell( 'I' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'tinh_trang_ban', trim( $sheet->getCell( 'LJ' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'tinh_trang_ban', trim( $sheet->getCell( 'J' . $row )->getValue() ) );
 					update_post_meta( $post_id, 'ghi_chu', trim( $sheet->getCell( 'K' . $row )->getValue() ) );
 				}
 			}
