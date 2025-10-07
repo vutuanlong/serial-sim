@@ -6,6 +6,7 @@ class PostType {
 	public function init() {
 		add_action( 'init', [ $this, 'register_post_type' ] );
 		add_action( 'admin_menu', [ $this, 'add_menu' ] );
+		add_action( 'wp_ajax_save_so_web_inline', [ $this, 'save_so_web_inline' ] );
 	}
 
 
@@ -72,7 +73,16 @@ class PostType {
 	}
 
 	public function enqueue() {
-		// wp_enqueue_style( 'baocao', trailingslashit( ASS_URL ) . "assets/css/baocao.css", [], filemtime( trailingslashit( ASS_DIR ) . "assets/css/baocao.css" ) );
+		wp_enqueue_style( 'serial', trailingslashit( ASS_URL ) . "assets/css/serial.css", [], filemtime( trailingslashit( ASS_DIR ) . "assets/css/serial.css" ) );
+		wp_enqueue_style( 'select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css', [], '4.1.0' );
+
+		wp_enqueue_script( 'serial-admin', ASS_URL . '/assets/js/serial-admin.js', ['jquery'], '1.0', true );
+		wp_enqueue_script( 'select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', ['jquery'], '4.1.0', true );
+		wp_localize_script(
+			'serial-admin',
+			'ajax_object',
+			[ 'ajax_url' => admin_url( 'admin-ajax.php' ) ]
+		);
 	}
 
 	public static function get_data() {
@@ -96,6 +106,7 @@ class PostType {
 				$post_id      = get_the_ID();
 
 				$data_so_tmdt[] = [
+					'so_web_id' => $post_id,
 					'sdt' => get_the_title( $post_id ),
 					'sdt_chamdinhdang'  => get_post_meta( $post_id, 'sdt_chamdinhdang', true ),
 					'id_kho'  => get_post_meta( $post_id, 'id_kho', true ),
@@ -114,5 +125,43 @@ class PostType {
 		wp_reset_postdata();
 
 		return $data_so_tmdt;
+	}
+
+	public function save_so_web_inline() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( [ 'message' => 'Bạn không có quyền' ] );
+		}
+
+		$post_id = intval( $_POST['post_id'] );
+
+		// Update meta
+		$fields = [
+			'sdt',
+			'sdt_chamdinhdang',
+			'id_kho',
+			'coc_sim',
+			'gia_ban_le',
+			'gia_dai_ly',
+			'loai_sim',
+			'cam_ket',
+			'kenh_ban',
+			'ngay_ban',
+			'tinh_trang_ban',
+			'ghi_chu',
+		];
+		foreach ( $fields as $field ) {
+			if ( isset( $_POST[$field] ) ) {
+				update_post_meta( $post_id, $field, sanitize_text_field( $_POST[$field] ) );
+			}
+		}
+
+		if ( ! empty( $_POST['sdt'] ) ) {
+			wp_update_post( [
+				'ID' => $post_id,
+				'post_title' => sanitize_text_field( $_POST['sdt'] ),
+			] );
+		}
+
+		wp_send_json_success( [ 'message' => 'Lưu thành công' ] );
 	}
 }

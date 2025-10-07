@@ -8,6 +8,8 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
+use ASS\Helper;
+
 class Import {
 	public function init() {
 		add_action( 'admin_menu', [ $this, 'admin_menu' ] );
@@ -31,14 +33,15 @@ class Import {
 		echo '<form method="post" enctype="multipart/form-data">';
 		wp_nonce_field( 'import_so_web_nonce', 'import_so_web_nonce_field' );
 
+		$array_nha_mang = Helper::nha_mang();
 		?>
 
 		<p>
 			<label>ID Kho:</label><br>
 			<select name="id_kho" required>
-				<option value="khovt">Viettel</option>
-				<option value="khovnph">Vinaphone</option>
-				<option value="khomobi">Mobifone</option>
+				<?php foreach ( $array_nha_mang as $nha_mang ) : ?>
+					<option value="<?= $nha_mang ?>"><?= $nha_mang ?></option>
+				<?php endforeach; ?>
 			</select>
 		</p>
 

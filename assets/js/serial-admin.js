@@ -27,6 +27,7 @@ jQuery( function($) {
 
         $(this).hide();
         row.find(".btn-save").show();
+        row.find(".btn-save-so-web").show();
 
 		row.find( 'td[data-field="serial_sim"]' ).find('select').select2();
     });
@@ -64,6 +65,41 @@ jQuery( function($) {
 			row.find('td[data-field="nha_mang"]').html(nha_mang);
 			row.find('td[data-field="loai_sim"]').html(loai_sim);
 			row.find('td[data-field="serial_sim"]').html(serial_sim);
+        });
+    });
+
+	$(".btn-save-so-web").on("click", function(){
+        var row = $(this).closest("tr");
+        var post_id = $(this).data("id");
+
+		var id_kho = row.find("td[data-field='id_kho']").find('select').val(),
+            loai_sim = row.find("td[data-field='loai_sim']").find('select').val();
+
+        var data = {
+            action: "save_so_web_inline",
+            post_id: post_id,
+            sdt: row.find("td[data-field='sdt']").text(),
+            sdt_chamdinhdang: row.find("td[data-field='sdt_chamdinhdang']").text(),
+            id_kho: id_kho,
+            coc_sim: row.find("td[data-field='coc_sim']").text(),
+            gia_ban_le: row.find("td[data-field='gia_ban_le']").text(),
+            gia_dai_ly: row.find("td[data-field='gia_dai_ly']").text(),
+            loai_sim: loai_sim,
+            cam_ket: row.find("td[data-field='cam_ket']").text(),
+            kenh_ban: row.find("td[data-field='kenh_ban']").text(),
+            ngay_ban: row.find("td[data-field='ngay_ban']").text(),
+            tinh_trang_ban: row.find("td[data-field='tinh_trang_ban']").text(),
+            ghi_chu: row.find("td[data-field='ghi_chu']").text(),
+        };
+
+        $.post(ajax_object.ajax_url, data, function(res){
+            alert(res.data.message);
+            row.find("td.editable").removeAttr("contenteditable");
+            row.find(".btn-save-so-web").hide();
+            row.find(".btn-edit").show();
+
+			row.find('td[data-field="id_kho"]').html(id_kho);
+			row.find('td[data-field="loai_sim"]').html(loai_sim);
         });
     });
 } )
