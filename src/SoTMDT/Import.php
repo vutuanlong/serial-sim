@@ -58,6 +58,7 @@ class Import {
 		<?php
 
 		echo '<input type="file" name="import_file" accept=".xlsx" required />';
+		echo '<p>Tải file mẫu <a href="' . ASS_URL . 'import-so-TMDT.xlsx">tại đây</a></p>';
 		submit_button( 'Upload và Nhập Số TMDT' );
 		echo '</form>';
 

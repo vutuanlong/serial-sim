@@ -87,7 +87,10 @@ class PostType {
 		// wp_enqueue_style( 'baocao', trailingslashit( ASS_URL ) . "assets/css/baocao.css", [], filemtime( trailingslashit( ASS_DIR ) . "assets/css/baocao.css" ) );
 
 		wp_enqueue_style( 'serial', trailingslashit( ASS_URL ) . "assets/css/serial.css", [], filemtime( trailingslashit( ASS_DIR ) . "assets/css/serial.css" ) );
+		wp_enqueue_style( 'select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css', [], '4.1.0' );
+
 		wp_enqueue_script( 'serial-admin', ASS_URL . '/assets/js/serial-admin.js', ['jquery'], '1.0', true );
+		wp_enqueue_script( 'select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', ['jquery'], '4.1.0', true );
 		wp_localize_script(
 			'serial-admin',
 			'ajax_object',

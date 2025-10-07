@@ -27,6 +27,8 @@ jQuery( function($) {
 
         $(this).hide();
         row.find(".btn-save").show();
+
+		row.find( 'td[data-field="serial_sim"]' ).find('select').select2();
     });
 
 	$(".btn-save").on("click", function(){
