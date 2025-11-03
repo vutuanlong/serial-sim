@@ -108,7 +108,8 @@ class Import {
 					update_post_meta( $post_id, 'goi_cuoc', trim( $sheet->getCell( 'I' . $row )->getValue() ) );
 					update_post_meta( $post_id, 'kenh_ban', trim( $sheet->getCell( 'J' . $row )->getValue() ) );
 					update_post_meta( $post_id, 'tinh_trang_ban', trim( $sheet->getCell( 'K' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'ghi_chu', trim( $sheet->getCell( 'L' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'ma_don_hang', trim( $sheet->getCell( 'L' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'ghi_chu', trim( $sheet->getCell( 'M' . $row )->getValue() ) );
 				}
 			}
 
@@ -142,6 +143,7 @@ class Import {
 				'Gói cước',
 				'Kênh bán hàng',
 				'Tình trạng bán hàng',
+				'Mã đơn hàng',
 				'Ghi chú',
 				'Gán Serial Sim',
 			];
@@ -165,6 +167,7 @@ class Import {
 					esc_html( $nv['goi_cuoc'] ),
 					esc_html( $nv['kenh_ban'] ),
 					esc_html( $nv['tinh_trang_ban'] ),
+					esc_html( $nv['ma_don_hang'] ),
 					esc_html( $nv['ghi_chu'] ),
 					esc_html( $nv['serial_sim'] ),
 				], null, 'A' . $rowIndex );

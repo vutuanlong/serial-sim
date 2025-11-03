@@ -28,6 +28,7 @@ use ASS\Helper;
 			<th>Gói cước</th>
 			<th>Kênh bán hàng</th>
 			<th>Tình trạng bán hàng</th>
+			<th>Mã đơn hàng</th>
 			<th>Ghi chú</th>
 			<th>Gán Serial Sim</th>
 			<th>Thao tác</th>
@@ -53,6 +54,7 @@ use ASS\Helper;
 			<td data-field="goi_cuoc" class="editable"><?php echo esc_html( $nv['goi_cuoc'] ) ?></td>
 			<td data-field="kenh_ban" class="editable"><?php echo esc_html( $nv['kenh_ban'] ) ?></td>
 			<td data-field="tinh_trang_ban" class="editable"><?php echo esc_html( $nv['tinh_trang_ban'] ) ?></td>
+			<td data-field="ma_don_hang" class="editable"><?php echo esc_html( $nv['ma_don_hang'] ) ?></td>
 			<td data-field="ghi_chu" class="editable"><?php echo esc_html( $nv['ghi_chu'] ) ?></td>
 			<td data-field="serial_sim"
 				class="editable"

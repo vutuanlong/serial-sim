@@ -130,6 +130,7 @@ class PostType {
 					'goi_cuoc'  => get_post_meta( $post_id, 'goi_cuoc', true ),
 					'kenh_ban'  => get_post_meta( $post_id, 'kenh_ban', true ),
 					'tinh_trang_ban'  => get_post_meta( $post_id, 'tinh_trang_ban', true ),
+					'ma_don_hang'  => get_post_meta( $post_id, 'ma_don_hang', true ),
 					'ghi_chu'  => get_post_meta( $post_id, 'ghi_chu', true ),
 					'serial_sim'  => get_post_meta( $post_id, 'serial_sim', true ),
 				];
