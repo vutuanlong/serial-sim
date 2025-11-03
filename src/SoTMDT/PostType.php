@@ -125,6 +125,7 @@ class PostType {
 					'dinh_dang_sim'  => get_post_meta( $post_id, 'dinh_dang_sim', true ),
 					'nha_mang'  => get_post_meta( $post_id, 'nha_mang', true ),
 					'loai_sim'  => get_post_meta( $post_id, 'loai_sim', true ),
+					'coc_sim'  => get_post_meta( $post_id, 'coc_sim', true ),
 					'cam_ket'  => get_post_meta( $post_id, 'cam_ket', true ),
 					'goi_cuoc'  => get_post_meta( $post_id, 'goi_cuoc', true ),
 					'kenh_ban'  => get_post_meta( $post_id, 'kenh_ban', true ),

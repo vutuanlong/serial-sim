@@ -103,11 +103,12 @@ class Import {
 					update_post_meta( $post_id, 'dinh_dang_sim', trim( $sheet->getCell( 'D' . $row )->getValue() ) );
 					update_post_meta( $post_id, 'nha_mang', $nha_mang );
 					update_post_meta( $post_id, 'loai_sim', $loai_sim );
-					update_post_meta( $post_id, 'cam_ket', trim( $sheet->getCell( 'G' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'goi_cuoc', trim( $sheet->getCell( 'H' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'kenh_ban', trim( $sheet->getCell( 'I' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'tinh_trang_ban', trim( $sheet->getCell( 'J' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'ghi_chu', trim( $sheet->getCell( 'K' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'coc_sim', trim( $sheet->getCell( 'G' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'cam_ket', trim( $sheet->getCell( 'H' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'goi_cuoc', trim( $sheet->getCell( 'I' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'kenh_ban', trim( $sheet->getCell( 'J' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'tinh_trang_ban', trim( $sheet->getCell( 'K' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'ghi_chu', trim( $sheet->getCell( 'L' . $row )->getValue() ) );
 				}
 			}
 
@@ -136,6 +137,7 @@ class Import {
 				'Định dạng sim',
 				'Nhà mạng',
 				'Loại sim',
+				'Cọc sim',
 				'Cam kết',
 				'Gói cước',
 				'Kênh bán hàng',
@@ -158,6 +160,7 @@ class Import {
 					esc_html( $nv['dinh_dang_sim'] ),
 					esc_html( $nv['nha_mang'] ),
 					esc_html( $nv['loai_sim'] ),
+					esc_html( $nv['coc_sim'] ),
 					esc_html( $nv['cam_ket'] ),
 					esc_html( $nv['goi_cuoc'] ),
 					esc_html( $nv['kenh_ban'] ),
