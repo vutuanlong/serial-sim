@@ -9,6 +9,9 @@ use ASS\Helper;
 
 	echo '<div class="wrap"><h1>Thông tin kho Số TMDT</h1>';
 	echo '<form method="GET" class="filter-form">';
+	echo '<input type="hidden" name="post_type" value="so-tmdt">';
+	echo '<input type="hidden" name="page" value="thong-tin-so-tmdt">';
+	echo '<a href="' . esc_url( add_query_arg( array_merge( $_GET, [ 'export' => 'excel' ] ) ) ) . '" class="button">Xuất Excel</a>';
 	echo '</form>';
 
 	// Hiển thị bảng

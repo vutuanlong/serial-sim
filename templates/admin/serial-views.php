@@ -4,7 +4,11 @@ use ASS\Serial\PostType;
 
 <div class="wrap">
 	<h1>Thông tin Serial Sim + kho số TMDT</h1>
-	<form method="GET" class="filter-form"></form>
+	<form method="GET" class="filter-form">
+		<input type="hidden" name="post_type" value="serial">
+		<input type="hidden" name="page" value="thong-tin">
+		<a href="<?= esc_url( add_query_arg( array_merge( $_GET, [ 'export' => 'excel' ] ) ) ) ?>" class="button">Xuất Excel</a>
+	</form>
 
 	<div class="wrap">
 		<table class="table-serial widefat fixed">

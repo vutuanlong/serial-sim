@@ -13,6 +13,7 @@ use ASS\Helper;
 class Import {
 	public function init() {
 		add_action( 'admin_menu', [ $this, 'admin_menu' ] );
+		add_action( 'admin_init', [ $this, 'generate_xlsx' ] );
 	}
 
 	public function admin_menu() {
@@ -25,8 +26,6 @@ class Import {
 			[ $this, 'import_so_tmdt_excel' ]
 		);
 	}
-
-
 
 	public function import_so_tmdt_excel() {
 		echo '<div class="wrap"><h1>Nhập Số TMDT</h1>';
@@ -116,5 +115,72 @@ class Import {
 		}
 
 		echo '</div>';
+	}
+
+	public function generate_xlsx() {
+		if (
+			isset( $_GET['post_type'] ) && $_GET['post_type'] === 'so-tmdt' &&
+			isset( $_GET['page'] ) && $_GET['page'] === 'thong-tin-so-tmdt' &&
+			isset( $_GET['export'] ) && $_GET['export'] === 'excel'
+		) {
+			$file = 'thong-tin-so-tmdt-' . date( 'd-m-Y' ) . '.xlsx';
+
+			$spreadsheet = new Spreadsheet();
+			$sheet = $spreadsheet->getActiveSheet();
+
+			// Header
+			$headers = [
+				'STT',
+				'SDT - Định dạng thường',
+				'SDT - Chấm định dạng',
+				'Định dạng sim',
+				'Nhà mạng',
+				'Loại sim',
+				'Cam kết',
+				'Gói cước',
+				'Kênh bán hàng',
+				'Tình trạng bán hàng',
+				'Ghi chú',
+				'Gán Serial Sim',
+			];
+			$sheet->fromArray( $headers, null, 'A1' );
+
+			// Rows
+			$rowIndex = 2;
+
+			$data_serial = PostType::get_data();
+
+			foreach ( $data_serial as $key => $nv ) {
+				$sheet->fromArray( [
+					esc_html( $key + 1 ),
+					esc_html( $nv['sdt'] ),
+					esc_html( $nv['sdt_chamdinhdang'] ),
+					esc_html( $nv['dinh_dang_sim'] ),
+					esc_html( $nv['nha_mang'] ),
+					esc_html( $nv['loai_sim'] ),
+					esc_html( $nv['cam_ket'] ),
+					esc_html( $nv['goi_cuoc'] ),
+					esc_html( $nv['kenh_ban'] ),
+					esc_html( $nv['tinh_trang_ban'] ),
+					esc_html( $nv['ghi_chu'] ),
+					esc_html( $nv['serial_sim'] ),
+				], null, 'A' . $rowIndex );
+
+				$rowIndex++;
+			}
+
+			$writer = new Xlsx( $spreadsheet );
+			ob_end_clean();
+
+			// Xuất file
+			header( 'Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' );
+			header( 'Content-Disposition: attachment;filename="' . $file . '"' );
+			header( 'Cache-Control: max-age=0' );
+			// If you're serving to IE 9, then the following may be needed
+			header( 'Cache-Control: max-age=1' );
+
+			$writer->save( 'php://output' );
+			exit;
+		}
 	}
 }

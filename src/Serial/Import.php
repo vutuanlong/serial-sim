@@ -13,6 +13,7 @@ use ASS\Helper;
 class Import {
 	public function init() {
 		add_action( 'admin_menu', [ $this, 'admin_menu' ] );
+		add_action( 'admin_init', [ $this, 'generate_xlsx' ] );
 	}
 
 	public function admin_menu() {
@@ -113,5 +114,51 @@ class Import {
 		}
 
 		echo '</div>';
+	}
+
+	public function generate_xlsx() {
+		if (
+			isset( $_GET['post_type'] ) && $_GET['post_type'] === 'serial' &&
+			isset( $_GET['page'] ) && $_GET['page'] === 'thong-tin' &&
+			isset( $_GET['export'] ) && $_GET['export'] === 'excel'
+		) {
+			$file = 'thong-tin-serial-sim-' . date( 'd-m-Y' ) . '.xlsx';
+
+			$spreadsheet = new Spreadsheet();
+			$sheet = $spreadsheet->getActiveSheet();
+
+			// Header
+			$headers = [ 'STT', 'Ngày nhập Serial', 'Serial Sim', 'SDT' ];
+			$sheet->fromArray( $headers, null, 'A1' );
+
+			// Rows
+			$rowIndex = 2;
+
+			$data_serial = PostType::serial_get_data();
+
+			foreach ( $data_serial as $key => $nv ) {
+				$sheet->fromArray( [
+					esc_html( $key + 1 ),
+					esc_html( $nv['ngay_nhap'] ),
+					esc_html( $nv['serial_sim'] ),
+					esc_html( $nv['sdt'] ),
+				], null, 'A' . $rowIndex );
+
+				$rowIndex++;
+			}
+
+			$writer = new Xlsx( $spreadsheet );
+			ob_end_clean();
+
+			// Xuất file
+			header( 'Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' );
+			header( 'Content-Disposition: attachment;filename="' . $file . '"' );
+			header( 'Cache-Control: max-age=0' );
+			// If you're serving to IE 9, then the following may be needed
+			header( 'Cache-Control: max-age=1' );
+
+			$writer->save( 'php://output' );
+			exit;
+		}
 	}
 }
