@@ -36,6 +36,7 @@ use ASS\Helper;
 	echo '<tbody>';
 
 	$data_nha_mang = Helper::nha_mang();
+	$data_dinh_dang_sim = Helper::dinh_dang_sim();
 	$data_so_tmdt = SoTMDTPostType::get_data();
 	$data_serial = SerialPostType::serial_get_data();
 	$serials = array_column( $data_serial, 'serial_sim' );
@@ -46,7 +47,13 @@ use ASS\Helper;
 			<td><?php echo esc_html( $key + 1 ) ?></td>
 			<td data-field="sdt"><?php echo esc_html( $nv['sdt'] ) ?></td>
 			<td data-field="sdt_chamdinhdang" class="editable"><?php echo esc_html( $nv['sdt_chamdinhdang'] ) ?></td>
-			<td data-field="dinh_dang_sim" class="editable"><?php echo esc_html( $nv['dinh_dang_sim'] ) ?></td>
+			<td data-field="dinh_dang_sim"
+				class="editable"
+				data-type="select"
+				data-options='<?= esc_attr( json_encode( $data_dinh_dang_sim, JSON_UNESCAPED_UNICODE ) ) ?>'
+			>
+				<?php echo esc_html( $nv['dinh_dang_sim'] ) ?>
+			</td>
 			<td data-field="nha_mang" class="editable" data-type="select" data-options='<?= esc_attr( json_encode( $data_nha_mang, JSON_UNESCAPED_UNICODE ) ) ?>'><?= esc_html( $nv['nha_mang'] ) ?></td>
 			<td data-field="loai_sim" class="editable" data-type="select" data-options='["Trả trước","Trả sau"]'><?= esc_html( $nv['loai_sim'] ) ?></td>
 			<td data-field="coc_sim" class="editable"><?= esc_html( $nv['coc_sim'] ) ?></td>

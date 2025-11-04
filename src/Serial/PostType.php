@@ -139,10 +139,12 @@ class PostType {
 			'dinh_dang_sim',
 			'nha_mang',
 			'loai_sim',
+			'coc_sim',
 			'cam_ket',
 			'goi_cuoc',
 			'kenh_ban',
 			'tinh_trang_ban',
+			'ma_don_hang',
 			'ghi_chu',
 			'serial_sim',
 		];

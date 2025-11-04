@@ -25,4 +25,23 @@ class Helper {
 			"Vinaphone",
 		];
 	}
+
+	public static function dinh_dang_sim() {
+		return [
+			'Sim dễ nhớ',
+			'Sim tam hoa',
+			'Sim lặp kép',
+			'Sim lộc phát',
+			'Sim thần tài',
+			'Sim ông địa',
+			'Sim đảo đơn',
+			'Sim năm sinh',
+			'Sim sảnh tiến',
+			'Sim tam hoa giữa',
+			'Sim tứ quý giữa',
+			'Sim số đối',
+			'SIM SỐ VIP',
+			'SIM GIÁ RẺ',
+		];
+	}
 }

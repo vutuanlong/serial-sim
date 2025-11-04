@@ -38,6 +38,7 @@ jQuery( function($) {
 
 		var nha_mang = row.find("td[data-field='nha_mang']").find('select').val(),
             loai_sim = row.find("td[data-field='loai_sim']").find('select').val(),
+            dinh_dang_sim = row.find("td[data-field='dinh_dang_sim']").find('select').val(),
 			serial_sim = row.find("td[data-field='serial_sim']").find('select').val();
 
         var data = {
@@ -45,14 +46,16 @@ jQuery( function($) {
             post_id: post_id,
             sdt: row.find("td[data-field='sdt']").text(),
             sdt_chamdinhdang: row.find("td[data-field='sdt_chamdinhdang']").text(),
-            dinh_dang_sim: row.find("td[data-field='dinh_dang_sim']").text(),
+            dinh_dang_sim: dinh_dang_sim,
             nha_mang: nha_mang,
             loai_sim: loai_sim,
+            coc_sim: row.find("td[data-field='coc_sim']").text(),
             serial_sim: serial_sim,
             cam_ket: row.find("td[data-field='cam_ket']").text(),
             goi_cuoc: row.find("td[data-field='goi_cuoc']").text(),
             kenh_ban: row.find("td[data-field='kenh_ban']").text(),
             tinh_trang_ban: row.find("td[data-field='tinh_trang_ban']").text(),
+            ma_don_hang: row.find("td[data-field='ma_don_hang']").text(),
             ghi_chu: row.find("td[data-field='ghi_chu']").text(),
         };
 
@@ -64,6 +67,7 @@ jQuery( function($) {
 
 			row.find('td[data-field="nha_mang"]').html(nha_mang);
 			row.find('td[data-field="loai_sim"]').html(loai_sim);
+			row.find('td[data-field="dinh_dang_sim"]').html(dinh_dang_sim);
 			row.find('td[data-field="serial_sim"]').html(serial_sim);
         });
     });
