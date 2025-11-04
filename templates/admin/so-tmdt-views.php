@@ -37,6 +37,7 @@ use ASS\Helper;
 
 	$data_nha_mang = Helper::nha_mang();
 	$data_dinh_dang_sim = Helper::dinh_dang_sim();
+	$data_tinh_trang = Helper::tinh_trang_ban_hang();
 	$data_so_tmdt = SoTMDTPostType::get_data();
 	$data_serial = SerialPostType::serial_get_data();
 	$serials = array_column( $data_serial, 'serial_sim' );
@@ -60,7 +61,13 @@ use ASS\Helper;
 			<td data-field="cam_ket" class="editable"><?php echo esc_html( $nv['cam_ket'] ) ?></td>
 			<td data-field="goi_cuoc" class="editable"><?php echo esc_html( $nv['goi_cuoc'] ) ?></td>
 			<td data-field="kenh_ban" class="editable"><?php echo esc_html( $nv['kenh_ban'] ) ?></td>
-			<td data-field="tinh_trang_ban" class="editable"><?php echo esc_html( $nv['tinh_trang_ban'] ) ?></td>
+			<td data-field="tinh_trang_ban"
+				class="editable"
+				data-type="select"
+				data-options='<?= esc_attr( json_encode( $data_tinh_trang, JSON_UNESCAPED_UNICODE ) ) ?>'
+			>
+				<?php echo esc_html( $nv['tinh_trang_ban'] ) ?>
+			</td>
 			<td data-field="ma_don_hang" class="editable"><?php echo esc_html( $nv['ma_don_hang'] ) ?></td>
 			<td data-field="ghi_chu" class="editable"><?php echo esc_html( $nv['ghi_chu'] ) ?></td>
 			<td data-field="serial_sim"

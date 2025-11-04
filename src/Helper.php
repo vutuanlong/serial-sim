@@ -44,4 +44,15 @@ class Helper {
 			'SIM GIÁ RẺ',
 		];
 	}
+
+	public static function tinh_trang_ban_hang() {
+		return [
+			'Trong kho',
+			'Chờ đăng',
+			'Đang bán',
+			'Đã bán',
+			'Đã đăng ký',
+			'Hoàn',
+		];
+	}
 }

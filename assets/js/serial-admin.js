@@ -12,7 +12,7 @@ jQuery( function($) {
                 if(typeof options === "string"){
                     options = JSON.parse(options);
                 }
-                var select = $("<select>");
+                var select = $("<select><option value=''>--Hãy chọn--</option>");
                 $.each(options, function(i, opt){
                     var option = $("<option>").val(opt).text(opt);
                     if(opt === val) option.attr("selected", "selected");
@@ -39,6 +39,7 @@ jQuery( function($) {
 		var nha_mang = row.find("td[data-field='nha_mang']").find('select').val(),
             loai_sim = row.find("td[data-field='loai_sim']").find('select').val(),
             dinh_dang_sim = row.find("td[data-field='dinh_dang_sim']").find('select').val(),
+            tinh_trang_ban = row.find("td[data-field='tinh_trang_ban']").find('select').val(),
 			serial_sim = row.find("td[data-field='serial_sim']").find('select').val();
 
         var data = {
@@ -54,7 +55,7 @@ jQuery( function($) {
             cam_ket: row.find("td[data-field='cam_ket']").text(),
             goi_cuoc: row.find("td[data-field='goi_cuoc']").text(),
             kenh_ban: row.find("td[data-field='kenh_ban']").text(),
-            tinh_trang_ban: row.find("td[data-field='tinh_trang_ban']").text(),
+            tinh_trang_ban: tinh_trang_ban,
             ma_don_hang: row.find("td[data-field='ma_don_hang']").text(),
             ghi_chu: row.find("td[data-field='ghi_chu']").text(),
         };
@@ -69,6 +70,7 @@ jQuery( function($) {
 			row.find('td[data-field="loai_sim"]').html(loai_sim);
 			row.find('td[data-field="dinh_dang_sim"]').html(dinh_dang_sim);
 			row.find('td[data-field="serial_sim"]').html(serial_sim);
+			row.find('td[data-field="tinh_trang_ban"]').html(tinh_trang_ban);
         });
     });
 
