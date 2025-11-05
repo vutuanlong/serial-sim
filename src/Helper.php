@@ -55,4 +55,10 @@ class Helper {
 			'Hoàn',
 		];
 	}
+	public static function loai_sim() {
+		return [
+			'Trả trước',
+			'Trả sau',
+		];
+	}
 }

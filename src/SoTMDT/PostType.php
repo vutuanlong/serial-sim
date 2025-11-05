@@ -109,6 +109,42 @@ class PostType {
 			'no_found_rows'  => false, // cần false để WP_Query đếm tổng post
 		];
 
+		// Nếu có chọn nhà mạng
+		if ( ! empty( $_GET['nha_mang'] ) ) {
+			$args['meta_query'][] = [
+				'key'     => 'nha_mang',
+				'value'   => sanitize_text_field( $_GET['nha_mang'] ),
+				'compare' => '=',
+			];
+		}
+
+		// Nếu có chọn loại sim
+		if ( ! empty( $_GET['loai_sim'] ) ) {
+			$args['meta_query'][] = [
+				'key'     => 'loai_sim',
+				'value'   => sanitize_text_field( $_GET['loai_sim'] ),
+				'compare' => '=',
+			];
+		}
+
+		// Nếu có chọn định dạng sim
+		if ( ! empty( $_GET['dinh_dang_sim'] ) ) {
+			$args['meta_query'][] = [
+				'key'     => 'dinh_dang_sim',
+				'value'   => sanitize_text_field( $_GET['dinh_dang_sim'] ),
+				'compare' => '=',
+			];
+		}
+
+		// Nếu có chọn tình trạng bán
+		if ( ! empty( $_GET['tinh_trang_ban'] ) ) {
+			$args['meta_query'][] = [
+				'key'     => 'tinh_trang_ban',
+				'value'   => sanitize_text_field( $_GET['tinh_trang_ban'] ),
+				'compare' => '=',
+			];
+		}
+
 		$query = new \WP_Query( $args );
 
 		$data_so_tmdt = [];

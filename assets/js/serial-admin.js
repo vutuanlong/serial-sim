@@ -108,4 +108,10 @@ jQuery( function($) {
 			row.find('td[data-field="loai_sim"]').html(loai_sim);
         });
     });
+
+	$(".filter-select").on("change", function(){
+        let params = new URLSearchParams(window.location.search);
+        params.set($(this).attr("name"), $(this).val());
+        window.location.search = params.toString();
+    });
 } )
