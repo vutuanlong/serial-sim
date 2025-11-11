@@ -47,8 +47,8 @@ class PostType {
 		if ( current_user_can( 'manage_options' ) ) {
 			$page = add_submenu_page(
 				'edit.php?post_type=serial',
-				__( 'Thông tin serial sim + kho số TMDT', 'ass' ),
-				__( 'Thông tin serial sim + kho số TMDT', 'ass' ),
+				__( 'Thông tin serial sim', 'ass' ),
+				__( 'Thông tin serial sim', 'ass' ),
 				'manage_options',
 				'thong-tin',
 				[
