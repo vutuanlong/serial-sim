@@ -79,6 +79,10 @@ jQuery( function($) {
         var post_id = $(this).data("id");
 
 		var id_kho = row.find("td[data-field='id_kho']").find('select').val(),
+			nha_mang = row.find("td[data-field='nha_mang']").find('select').val(),
+			dinh_dang_sim = row.find("td[data-field='dinh_dang_sim']").find('select').val(),
+            tinh_trang_ban = row.find("td[data-field='tinh_trang_ban']").find('select').val(),
+			serial_sim = row.find("td[data-field='serial_sim']").find('select').val()
             loai_sim = row.find("td[data-field='loai_sim']").find('select').val();
 
         var data = {
@@ -86,16 +90,20 @@ jQuery( function($) {
             post_id: post_id,
             sdt: row.find("td[data-field='sdt']").text(),
             sdt_chamdinhdang: row.find("td[data-field='sdt_chamdinhdang']").text(),
+			dinh_dang_sim: dinh_dang_sim,
+            nha_mang: nha_mang,
             id_kho: id_kho,
             coc_sim: row.find("td[data-field='coc_sim']").text(),
             gia_ban_le: row.find("td[data-field='gia_ban_le']").text(),
             gia_dai_ly: row.find("td[data-field='gia_dai_ly']").text(),
             loai_sim: loai_sim,
             cam_ket: row.find("td[data-field='cam_ket']").text(),
+			goi_cuoc: row.find("td[data-field='goi_cuoc']").text(),
             kenh_ban: row.find("td[data-field='kenh_ban']").text(),
             ngay_ban: row.find("td[data-field='ngay_ban']").text(),
-            tinh_trang_ban: row.find("td[data-field='tinh_trang_ban']").text(),
+            tinh_trang_ban: tinh_trang_ban,
             ghi_chu: row.find("td[data-field='ghi_chu']").text(),
+			serial_sim: serial_sim,
         };
 
         $.post(ajax_object.ajax_url, data, function(res){
@@ -106,6 +114,10 @@ jQuery( function($) {
 
 			row.find('td[data-field="id_kho"]').html(id_kho);
 			row.find('td[data-field="loai_sim"]').html(loai_sim);
+			row.find('td[data-field="nha_mang"]').html(nha_mang);
+			row.find('td[data-field="dinh_dang_sim"]').html(dinh_dang_sim);
+			row.find('td[data-field="serial_sim"]').html(serial_sim);
+			row.find('td[data-field="tinh_trang_ban"]').html(tinh_trang_ban);
         });
     });
 
