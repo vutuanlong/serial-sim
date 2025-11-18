@@ -12,13 +12,33 @@ $data_tinh_trang = Helper::tinh_trang_ban_hang();
 
 <div class="wrap">
 	<h1>Thông tin kho Số TMDT</h1>
-	<form method="GET" class="filter-form">
-		<input type="hidden" name="post_type" value="so-tmdt">
-		<input type="hidden" name="page" value="thong-tin-so-tmdt">
-		<a href="<?= esc_url( add_query_arg( array_merge( $_GET, [ 'export' => 'excel' ] ) ) ) ?>" class="button">Xuất Excel</a>
-	</form>
+	<div style="display: flex; gap: 15px; margin-top: 10px; justify-content: space-between;">
+		<form method="GET" class="filter-form">
+			<input type="hidden" name="post_type" value="so-tmdt">
+			<input type="hidden" name="page" value="thong-tin-so-tmdt">
+			<a href="<?= esc_url( add_query_arg( array_merge( $_GET, [ 'export' => 'excel' ] ) ) ) ?>" class="button">Xuất Excel</a>
+		</form>
 
-	<div class="wrap">
+		<form method="get" style="display:flex; gap:15px;">
+			<input type="hidden" name="post_type" value="so-tmdt">
+			<input type="hidden" name="page" value="thong-tin-so-tmdt">
+			<input type="text"
+				name="search_sdt"
+				placeholder="Tìm theo số không chấm"
+				value="<?php echo esc_attr( $_GET['search_sdt'] ?? '' ); ?>"
+				style="padding:6px 10px; width:220px;">
+
+			<input type="text"
+				name="search_serial"
+				placeholder="Tìm theo serial sim"
+				value="<?php echo esc_attr( $_GET['search_serial'] ?? '' ); ?>"
+				style="padding:6px 10px; width:220px;">
+
+			<button type="submit" class="button">Lọc</button>
+		</form>
+	</div>
+
+	<div class="wrap" style="margin-right: 0;">
 		<table class="table-serial widefat fixed">
 			<thead>
 				<tr>

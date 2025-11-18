@@ -145,6 +145,18 @@ class PostType {
 			];
 		}
 
+		if ( ! empty( $_GET['search_serial'] ) ) {
+			$args['meta_query'][] = [
+				'key'     => 'serial_sim',
+				'value'   => sanitize_text_field( $_GET['search_serial'] ),
+				'compare' => '='
+			];
+		}
+
+		if ( ! empty( $_GET['search_sdt'] ) ) {
+			$args['s'] = sanitize_text_field( $_GET['search_sdt'] );
+		}
+
 		$query = new \WP_Query( $args );
 
 		$data_so_tmdt = [];
