@@ -90,15 +90,18 @@ class Import {
 				if ( $post_id ) {
 					update_post_meta( $post_id, 'sdt_chamdinhdang', trim( $sheet->getCell( 'C' . $row )->getValue() ) );
 					update_post_meta( $post_id, 'id_kho', $id_kho );
-					update_post_meta( $post_id, 'coc_sim', trim( $sheet->getCell( 'E' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'gia_ban_le', trim( $sheet->getCell( 'F' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'gia_dai_ly', trim( $sheet->getCell( 'G' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'loai_sim', trim( $sheet->getCell( 'H' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'cam_ket', trim( $sheet->getCell( 'I' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'kenh_ban', trim( $sheet->getCell( 'J' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'ngay_ban', trim( $sheet->getCell( 'K' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'tinh_trang_ban', trim( $sheet->getCell( 'L' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'ghi_chu', trim( $sheet->getCell( 'M' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'dinh_dang_sim', trim( $sheet->getCell( 'E' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'nha_mang', trim( $sheet->getCell( 'F' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'loai_sim', trim( $sheet->getCell( 'G' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'coc_sim', trim( $sheet->getCell( 'H' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'gia_ban_le', trim( $sheet->getCell( 'I' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'gia_dai_ly', trim( $sheet->getCell( 'J' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'cam_ket', trim( $sheet->getCell( 'K' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'goi_cuoc', trim( $sheet->getCell( 'L' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'kenh_ban', trim( $sheet->getCell( 'M' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'ngay_ban', trim( $sheet->getCell( 'N' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'tinh_trang_ban', trim( $sheet->getCell( 'O' . $row )->getValue() ) );
+					update_post_meta( $post_id, 'ghi_chu', trim( $sheet->getCell( 'P' . $row )->getValue() ) );
 				}
 			}
 
