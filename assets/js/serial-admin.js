@@ -82,7 +82,7 @@ jQuery( function($) {
 			nha_mang = row.find("td[data-field='nha_mang']").find('select').val(),
 			dinh_dang_sim = row.find("td[data-field='dinh_dang_sim']").find('select').val(),
             tinh_trang_ban = row.find("td[data-field='tinh_trang_ban']").find('select').val(),
-			serial_sim = row.find("td[data-field='serial_sim']").find('select').val()
+			serial_sim = row.find("td[data-field='serial_sim']").find('select').val(),
             loai_sim = row.find("td[data-field='loai_sim']").find('select').val();
 
         var data = {
