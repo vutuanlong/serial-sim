@@ -87,9 +87,8 @@ $data_tinh_trang = Helper::tinh_trang_ban_hang();
 							<?php endforeach; ?>
 						</select>
 					</th>
-					<!-- <th>Mã đơn hàng</th> -->
 					<th>Ghi chú</th>
-					<th>Gán Serial Sim</th>
+					<!-- <th>Gán Serial Sim</th> -->
 					<th>Thao tác</th>
 				</tr>
 			</thead>
@@ -130,15 +129,14 @@ $data_tinh_trang = Helper::tinh_trang_ban_hang();
 						>
 							<?php echo esc_html( $nv['tinh_trang_ban'] ) ?>
 						</td>
-						<!-- <td data-field="ma_don_hang" class="editable"><?php echo esc_html( $nv['ma_don_hang'] ) ?></td> -->
 						<td data-field="ghi_chu" class="editable"><?php echo esc_html( $nv['ghi_chu'] ) ?></td>
-						<td data-field="serial_sim"
+						<!-- <td data-field="serial_sim"
 							class="editable"
 							data-type="select"
 							data-options='<?= esc_attr( json_encode( $serials, JSON_UNESCAPED_UNICODE ) ) ?>'
 						>
 							<?= esc_html( $nv['serial_sim'] ) ?>
-						</td>
+						</td> -->
 						<td>
 							<button class="btn-edit" data-id="<?= $nv['so_web_id'] ?>">✏️</button>
 							<button class="btn-save-so-web" data-id="<?= $nv['so_web_id'] ?>" style="display:none;">💾</button>
