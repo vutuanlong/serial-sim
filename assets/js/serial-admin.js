@@ -297,4 +297,62 @@ jQuery( function($) {
 		processBatchSoWeb();
 	}
 
+
+	$("#import-serial-form").on("submit", function(e){
+		e.preventDefault();
+
+		var form = document.getElementById("import-serial-form");
+    	var formData = new FormData(form);
+
+		$("#import-progress-wrapper").show();
+
+		var params = {
+			ngay_nhap: $("input[name=ngay_nhap]").val(),
+			nha_mang: $("select[name=nha_mang]").val(),
+		};
+		console.log('params', params);
+
+		$.ajax({
+			url: ajax_object.ajax_url,
+			method: "POST",
+			data: formData,
+			dataType: 'json',
+			processData: false,
+    		contentType: false,
+			success: function(res){
+				if(res.status === "ok") {
+					runImportSerial(res.import_id, res.total, params);
+				}
+			}
+		});
+	});
+
+	function runImportSerial(import_id, total, params) {
+		let offset = 0;
+
+		function processBatchSerial() {
+			$.post(ajax_object.ajax_url, {
+				action: "import_serial_batch",
+				import_id: import_id,
+				offset: offset,
+            	ngay_nhap: params.ngay_nhap,
+				nha_mang: params.nha_mang,
+			}, function(res){
+
+				$("#progress-bar").css("width", res.percent + "%");
+				$("#progress-text").text(res.percent + "%");
+
+				offset = res.done;
+
+				if (!res.finished) {
+					processBatchSerial();
+				} else {
+					$("#import-message").text("🎉 Import hoàn tất!");
+				}
+			});
+		}
+
+		processBatchSerial();
+	}
+
 } )
