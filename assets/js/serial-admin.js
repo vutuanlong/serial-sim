@@ -185,4 +185,62 @@ jQuery( function($) {
 		processBatch();
 	}
 
+
+	$("#import-so-tmdt-serial-form").on("submit", function(e){
+		e.preventDefault();
+
+		var form = document.getElementById("import-so-tmdt-serial-form");
+    	var formData = new FormData(form);
+
+		$("#import-progress-wrapper").show();
+
+		var params = {
+			nha_mang: $("select[name=nha_mang]").val(),
+			loai_sim: $("select[name=loai_sim]").val(),
+		};
+
+		$.ajax({
+			url: ajax_object.ajax_url,
+			method: "POST",
+			data: formData,
+			dataType: 'json',
+			processData: false,
+    		contentType: false,
+			success: function(res){
+				if(res.status === "ok") {
+					runImportSoTmdtSerial(res.import_id, res.total, params);
+				}
+			}
+		});
+	});
+
+	function runImportSoTmdtSerial(import_id, total, params) {
+		let offset = 0;
+
+		function processBatchSoTmdtSerial() {
+
+			$.post(ajax_object.ajax_url, {
+				action: "import_so_tmdt_serial_batch",
+				import_id: import_id,
+				offset: offset,
+				nha_mang: params.nha_mang,
+            	loai_sim: params.loai_sim
+			}, function(res){
+
+				$("#progress-bar").css("width", res.percent + "%");
+				$("#progress-text").text(res.percent + "%");
+
+				offset = res.done;
+
+				if (!res.finished) {
+					processBatchSoTmdtSerial();
+				} else {
+					$("#import-message").text("🎉 Import hoàn tất!");
+				}
+			});
+		}
+
+		processBatchSoTmdtSerial();
+	}
+
 } )

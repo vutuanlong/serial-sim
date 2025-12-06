@@ -17,6 +17,9 @@ class Import {
 
 		add_action( 'wp_ajax_import_so_tmdt', [ $this, 'import_so_tmdt' ] );
 		add_action( 'wp_ajax_import_batch', [ $this, 'import_batch' ] );
+
+		add_action( 'wp_ajax_import_so_tmdt_serial', [ $this, 'import_so_tmdt_serial' ] );
+		add_action( 'wp_ajax_import_so_tmdt_serial_batch', [ $this, 'import_so_tmdt_serial_batch' ] );
 	}
 
 	public function admin_menu() {
@@ -30,14 +33,15 @@ class Import {
 		);
 		add_action( "admin_print_styles-$page", [ $this, 'enqueue' ] );
 
-		add_submenu_page(
+		$page_ghep = add_submenu_page(
 			'edit.php?post_type=so-tmdt',
 			'Nhập Số TMDT + Serial Sim đã ghép',
 			'Nhập Số TMDT + Serial Sim đã ghép',
 			'manage_options',
 			'import-so-tmdt-serial',
-			[ $this, 'import_so_tmdt_serial_excel' ]
+			[ $this, 'import_so_tmdt_serial_form' ]
 		);
+		add_action( "admin_print_styles-$page_ghep", [ $this, 'enqueue' ] );
 	}
 
 	public function enqueue() {
@@ -54,11 +58,11 @@ class Import {
 		);
 	}
 
-	public function import_so_tmdt_serial_excel() {
+	public function import_so_tmdt_serial_form() {
 		echo '<div class="wrap"><h1>Nhập Số TMDT + Serial Sim đã ghép</h1>';
 
 		// Form upload file
-		echo '<form method="post" enctype="multipart/form-data">';
+		echo '<form id="import-so-tmdt-serial-form" method="post" enctype="multipart/form-data">';
 		wp_nonce_field( 'import_so_tmdt_serial_nonce', 'import_so_tmdt_serial_nonce_field' );
 
 		$array_nha_mang = Helper::nha_mang();
@@ -86,76 +90,141 @@ class Import {
 		echo '<input type="file" name="import_file" accept=".xlsx" required />';
 		echo '<p>Tải file mẫu <a href="' . ASS_URL . 'import-serial-khoso.xlsx">tại đây</a></p>';
 		submit_button( 'Upload' );
+		echo '<input type="hidden" name="action" value="import_so_tmdt_serial">';
 		echo '</form>';
 
-		// Xử lý file upload
-		if ( isset( $_FILES['import_file'] ) && ! empty( $_FILES['import_file']['tmp_name'] ) ) {
-			if ( ! isset( $_POST['import_so_tmdt_serial_nonce_field'] ) || ! wp_verify_nonce( $_POST['import_so_tmdt_serial_nonce_field'], 'import_so_tmdt_serial_nonce' ) ) {
-				wp_die( 'Nonce verification failed' );
-			}
+		?>
+		<div id="import-progress-wrapper" style="display:none;margin-top:20px; width:300px;">
+			<div style="background:#ddd; border-radius:3px;">
+				<div id="progress-bar" style="height:20px; width:0%; background:#4caf50; transition:0.3s; border-radius:3px;"></div>
+			</div>
+			<div id="progress-text" style="margin-top:5px;">0%</div>
+		</div>
 
-			$file = $_FILES['import_file']['tmp_name'];
-			$spreadsheet = IOFactory::load( $file );
-			$sheet = $spreadsheet->getActiveSheet();
-
-			$highestRow = $sheet->getHighestRow();
-
-			$nha_mang  = sanitize_text_field( $_POST['nha_mang'] );
-			$loai_sim  = sanitize_text_field( $_POST['loai_sim'] );
-
-			for ( $row = 2; $row <= $highestRow; $row++ ) {
-				$name_so_tmdt = trim( $sheet->getCell( 'D' . $row )->getValue() );
-				$name_serial  = trim( $sheet->getCell( 'C' . $row )->getValue() );
-
-				if ( empty( $name_so_tmdt ) ) {
-					continue;
-				}
-
-				// check nếu Số TMDT đã tồn tại (title post type Số TMDT)
-				$exists = get_page_by_title( $name_so_tmdt, OBJECT, 'so-tmdt' );
-
-				if ( $exists ) {
-					$errors[] = $name_so_tmdt;
-					continue;
-				}
-
-				$post_id = wp_insert_post( [
-					'post_title'  => $name_so_tmdt,
-					'post_type'   => 'so-tmdt',
-					'post_status' => 'publish',
-				] );
-
-				if ( $post_id ) {
-
-					update_post_meta( $post_id, 'sdt_chamdinhdang', trim( $sheet->getCell( 'E' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'dinh_dang_sim', trim( $sheet->getCell( 'F' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'nha_mang', $nha_mang );
-					update_post_meta( $post_id, 'loai_sim', $loai_sim );
-					update_post_meta( $post_id, 'coc_sim', trim( $sheet->getCell( 'I' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'cam_ket', trim( $sheet->getCell( 'J' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'goi_cuoc', trim( $sheet->getCell( 'K' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'kenh_ban', trim( $sheet->getCell( 'L' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'tinh_trang_ban', trim( $sheet->getCell( 'M' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'ma_don_hang', trim( $sheet->getCell( 'N' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'ghi_chu', trim( $sheet->getCell( 'O' . $row )->getValue() ) );
-					update_post_meta( $post_id, 'serial_sim', $name_serial );
-				}
-
-				$post_id_serial = wp_insert_post( [
-					'post_title'  => $name_serial,
-					'post_type'   => 'serial',
-					'post_status' => 'publish',
-				] );
-				if ( $post_id_serial ) {
-					update_post_meta( $post_id_serial, 'sdt', sanitize_text_field( $name_so_tmdt ) );
-					update_post_meta( $post_id_serial, 'ngay_nhap', trim( $sheet->getCell( 'B' . $row )->getValue() ) );
-				}
-			}
-
-			echo '<div class="updated notice"><p>Import thành công!</p></div>';
-		}
+		<div id="import-message" style="margin-top:10px; font-weight:bold;"></div>
+		<?php
 
 		echo '</div>';
+	}
+
+	public function import_so_tmdt_serial() {
+
+		// Xử lý file upload
+		if ( empty( $_FILES['import_file'] ) ) {
+			wp_send_json( [ 'status' => 'error' ] );
+		}
+
+		if ( ! isset( $_POST['import_so_tmdt_serial_nonce_field'] ) || ! wp_verify_nonce( $_POST['import_so_tmdt_serial_nonce_field'], 'import_so_tmdt_serial_nonce' ) ) {
+			wp_die( 'Nonce verification failed' );
+		}
+
+		$file = $_FILES['import_file']['tmp_name'];
+		$rows = [];
+
+		$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load( $file );
+		$sheet = $spreadsheet->getActiveSheet();
+		$rows = $sheet->toArray();
+		$rows = array_slice( $rows, 1 );
+
+		$import_id = 'import_' . wp_generate_uuid4();
+
+		// Lưu toàn bộ CSV vào transient
+		set_transient( $import_id, $rows, 60 * 60 );
+
+		wp_send_json( [
+			'status'    => 'ok',
+			'import_id' => $import_id,
+			'total'     => count( $rows ),
+		] );
+	}
+
+	public function import_so_tmdt_serial_batch() {
+		$import_id = $_POST['import_id'];
+		$offset    = intval( $_POST['offset'] );
+
+		$rows = get_transient( $import_id );
+		$total = count( $rows );
+
+		$batch_size = 50;
+
+		$end = $offset + $batch_size;
+		if ( $end > $total ) $end = $total;
+
+		$nha_mang = isset( $_POST['nha_mang'] ) ? sanitize_text_field( $_POST['nha_mang'] ) : '';
+		$loai_sim = isset( $_POST['loai_sim'] ) ? sanitize_text_field( $_POST['loai_sim'] ) : '';
+
+		// Xử lý từng dòng CSV
+		for ( $i = $offset; $i < $end; $i++ ) {
+
+			$row = $rows[ $i ];
+
+			$name_so_tmdt = trim( $row[3] );
+			$name_serial  = trim( $row[2] );
+
+			if ( empty( $name_so_tmdt ) ) {
+				continue;
+			}
+
+			// check nếu Số TMDT đã tồn tại (title post type Số TMDT)
+			$exists = get_page_by_title( $name_so_tmdt, OBJECT, 'so-tmdt' );
+
+			if ( $exists ) {
+				$errors[] = $name_so_tmdt;
+				continue;
+			}
+
+			$post_date = current_time( 'mysql' );
+			$post_date = date( 'Y-m-d H:i:s', strtotime( $post_date ) - ( 30 * 60 ) + $i );
+
+			$post_id = wp_insert_post( [
+				'post_title'  => $name_so_tmdt,
+				'post_type'   => 'so-tmdt',
+				'post_status' => 'publish',
+				'post_date' => $post_date,
+			] );
+
+			if ( $post_id ) {
+
+				update_post_meta( $post_id, 'sdt_chamdinhdang', trim( $row[4] ) );
+				update_post_meta( $post_id, 'dinh_dang_sim', trim( $row[5] ) );
+				update_post_meta( $post_id, 'nha_mang', $nha_mang );
+				update_post_meta( $post_id, 'loai_sim', $loai_sim );
+				update_post_meta( $post_id, 'coc_sim', trim( $row[8] ) );
+				update_post_meta( $post_id, 'cam_ket', trim( $row[9] ) );
+				update_post_meta( $post_id, 'goi_cuoc', trim( $row[10] ) );
+				update_post_meta( $post_id, 'kenh_ban', trim( $row[11] ) );
+				update_post_meta( $post_id, 'tinh_trang_ban', trim( $row[12] ) );
+				update_post_meta( $post_id, 'ma_don_hang', trim( $row[13] ) );
+				update_post_meta( $post_id, 'ghi_chu', trim( $row[14] ) );
+				update_post_meta( $post_id, 'serial_sim', $name_serial );
+			}
+
+			$post_id_serial = wp_insert_post( [
+				'post_title'  => $name_serial,
+				'post_type'   => 'serial',
+				'post_status' => 'publish',
+			] );
+			if ( $post_id_serial ) {
+				update_post_meta( $post_id_serial, 'sdt', sanitize_text_field( $name_so_tmdt ) );
+				update_post_meta( $post_id_serial, 'ngay_nhap', trim( $row[1] ) );
+			}
+		}
+
+		$done = $end;
+		$percent = round( ( $done / $total ) * 100 );
+
+		$finished = ( $done >= $total );
+
+		if ( $finished ) {
+			delete_transient( $import_id );
+		}
+
+		wp_send_json( [
+			"done"     => $done,
+			"percent"  => $percent,
+			"finished" => $finished,
+		] );
+
 	}
 
 	public function import_so_tmdt_excel_form() {
