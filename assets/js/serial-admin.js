@@ -243,4 +243,58 @@ jQuery( function($) {
 		processBatchSoTmdtSerial();
 	}
 
+	$("#import-so-web-form").on("submit", function(e){
+		e.preventDefault();
+
+		var form = document.getElementById("import-so-web-form");
+    	var formData = new FormData(form);
+
+		$("#import-progress-wrapper").show();
+
+		var params = {
+			id_kho: $("select[name=id_kho]").val(),
+		};
+
+		$.ajax({
+			url: ajax_object.ajax_url,
+			method: "POST",
+			data: formData,
+			dataType: 'json',
+			processData: false,
+    		contentType: false,
+			success: function(res){
+				if(res.status === "ok") {
+					runImportSoWeb(res.import_id, res.total, params);
+				}
+			}
+		});
+	});
+
+	function runImportSoWeb(import_id, total, params) {
+		let offset = 0;
+
+		function processBatchSoWeb() {
+			$.post(ajax_object.ajax_url, {
+				action: "import_so_web_batch",
+				import_id: import_id,
+				offset: offset,
+				id_kho: params.id_kho,
+			}, function(res){
+
+				$("#progress-bar").css("width", res.percent + "%");
+				$("#progress-text").text(res.percent + "%");
+
+				offset = res.done;
+
+				if (!res.finished) {
+					processBatchSoWeb();
+				} else {
+					$("#import-message").text("🎉 Import hoàn tất!");
+				}
+			});
+		}
+
+		processBatchSoWeb();
+	}
+
 } )
